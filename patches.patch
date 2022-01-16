@@ -1,0 +1,27 @@
+diff --git a/package/kernel/mac80211/Makefile b/package/kernel/mac80211/Makefile
+index 3686126053..56b7ea350f 100644
+--- a/package/kernel/mac80211/Makefile
++++ b/package/kernel/mac80211/Makefile
+@@ -482,6 +482,8 @@ define Build/Prepare
+ 		$(PKG_BUILD_DIR)/backport-include/linux/bcm47xx_nvram.h
+ 
+ 	echo 'compat-wireless-$(PKG_VERSION)-$(PKG_RELEASE)-$(REVISION)' > $(PKG_BUILD_DIR)/compat_version
++	$(CP) ./csi/ar9003_csi.c  $(PKG_BUILD_DIR)/drivers/net/wireless/ath/ath9k/
++	$(CP) ./csi/ar9003_csi.h  $(PKG_BUILD_DIR)/drivers/net/wireless/ath/ath9k/
+ endef
+ 
+ ifneq ($(CONFIG_PACKAGE_kmod-cfg80211)$(CONFIG_PACKAGE_kmod-lib80211),)
+diff --git a/package/kernel/mac80211/ath.mk b/package/kernel/mac80211/ath.mk
+index e815f37e1c..de64bdc6a7 100644
+--- a/package/kernel/mac80211/ath.mk
++++ b/package/kernel/mac80211/ath.mk
+@@ -194,7 +194,8 @@ define KernelPackage/ath9k-common
+   DEPENDS+= @PCI_SUPPORT||USB_SUPPORT||TARGET_ath79 +kmod-ath +@DRIVER_11N_SUPPORT
+   FILES:= \
+ 	$(PKG_BUILD_DIR)/drivers/net/wireless/ath/ath9k/ath9k_common.ko \
+-	$(PKG_BUILD_DIR)/drivers/net/wireless/ath/ath9k/ath9k_hw.ko
++	$(PKG_BUILD_DIR)/drivers/net/wireless/ath/ath9k/ath9k_hw.ko \
++	$(PKG_BUILD_DIR)/drivers/net/wireless/ath/ath9k/ar9003_csi.ko
+ endef
+ 
+ define KernelPackage/ath9k
